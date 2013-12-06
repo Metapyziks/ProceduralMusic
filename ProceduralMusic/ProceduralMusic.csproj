@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PitchShift.cs" />
     <Compile Include="Repeat.cs" />
     <Compile Include="SampleFile.cs" />
     <Compile Include="Sampler.cs" />

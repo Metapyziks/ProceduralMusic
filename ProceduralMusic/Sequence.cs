@@ -29,12 +29,12 @@ namespace ProceduralMusic
             _elems = new List<SequenceElement>();
         }
 
-        public void Add(Source source, double delay)
+        public void Add(double delay, Source source)
         {
             _elems.Add(new SequenceElement(source, delay));
         }
 
-        public void Add(Source source, int beat)
+        public void Add(int beat, Source source)
         {
             _elems.Add(new SequenceElement(source, _beatPeriod * beat));
         }

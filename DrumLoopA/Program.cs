@@ -21,51 +21,51 @@ namespace DrumLoopA
             var hiHat = new SampleFile(Path.Combine(hiHatDir, "DJF_HH_HINGE.wav")).Scale(0.4);
             var crash = new SampleFile(Path.Combine(hiHatDir, "DJF_HH_JINAL.wav")).Scale(0.33);
             var snare = new SampleFile(Path.Combine(hiHatDir, "DJF_HH_HEAT_BEAST.wav")).Scale(0.27);
-            var bassDrum = new SampleFile(Path.Combine(bassDrumDir, "DJF_BD_TINY.wav")).Scale(0.33);
+            var bassDrum = new SampleFile(Path.Combine(bassDrumDir, "DJF_BD_KNOCKERS.wav")).Scale(0.33);
 
-            var bpm = 174.0;
+            var bpm = 170.0;
 
             var seq = new Sequence(bpm) {
-                { new Sequence(bpm) {
-                    { hiHat.Repeat(bpm, 2, 8), 0 },
-                    { bassDrum, 0 },
-                    { bassDrum, 2 },
-                    { snare, 4 },
-                    { snare, 7 },
-                    { snare, 9 },
-                    { bassDrum, 10 },
-                    { bassDrum, 11 },
-                    { snare, 12 },
-                    { snare, 15 }
-                }.Repeat(174.0, 16, 2), 0 },
-                { new Sequence(bpm) {
-                    { hiHat.Repeat(bpm, 2, 5), 0 },
-                    { bassDrum, 0 },
-                    { bassDrum, 2 },
-                    { snare, 4 },
-                    { snare, 7 },
-                    { snare, 9 },
-                    { hiHat.Scale(2.5), 10 },
-                    { bassDrum, 10 },
-                    { hiHat.Repeat(bpm, 2, 2), 12 },
-                    { snare, 14 }
-                }, 32 },
-                { new Sequence(bpm) {
-                    { hiHat.Repeat(bpm, 2, 5), 0 },
-                    { snare, 1 },
-                    { bassDrum, 2 },
-                    { bassDrum, 3 },
-                    { snare, 4 },
-                    { snare, 7 },
-                    { snare, 9 },
-                    { crash, 10 },
-                    { bassDrum, 10 },
-                    { hiHat.Repeat(bpm, 2, 2), 12 },
-                    { snare, 14 }
-                }, 48 }
+                { 0, new Sequence(bpm) {
+                    { 0,  hiHat.Repeat(bpm, 2, 8) },
+                    { 0,  bassDrum },
+                    { 2,  bassDrum },
+                    { 4,  snare },
+                    { 7,  snare },
+                    { 9,  snare },
+                    { 10, bassDrum },
+                    { 11, bassDrum },
+                    { 12, snare },
+                    { 15, snare }
+                }.Repeat(bpm, 16, 2) },
+                { 32, new Sequence(bpm) {
+                    { 0,  hiHat.Repeat(bpm, 2, 5) },
+                    { 0,  bassDrum },
+                    { 2,  bassDrum },
+                    { 4,  snare },
+                    { 7,  snare },
+                    { 9,  snare },
+                    { 10, hiHat.Scale(2.5) },
+                    { 10, bassDrum },
+                    { 12, hiHat.Repeat(bpm, 2, 2) },
+                    { 14, snare }
+                } },
+                { 48, new Sequence(bpm) {
+                    { 0,  hiHat.Repeat(bpm, 2, 5) },
+                    { 1,  snare },
+                    { 2,  bassDrum },
+                    { 3,  bassDrum },
+                    { 4,  snare },
+                    { 7,  snare },
+                    { 9,  snare },
+                    { 10, crash },
+                    { 10, bassDrum },
+                    { 12, hiHat.Repeat(bpm, 2, 2) },
+                    { 14, snare }
+                } }
             }.Repeat(bpm, 64, 2);
 
-            Sampler.PreviewPlayback(seq, 0.0, 12.0);
+            Sampler.PreviewPlayback(seq, 0.0, 11.5);
         }
     }
 }

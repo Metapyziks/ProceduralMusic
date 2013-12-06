@@ -38,5 +38,10 @@ namespace ProceduralMusic
         {
             return new Repeat(this, period, repetitions);
         }
+
+        public PitchShift PitchShift(double scale, double duration)
+        {
+            return new PitchShift(this, scale, duration);
+        }
     }
 }
