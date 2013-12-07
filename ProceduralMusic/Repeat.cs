@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProceduralMusic
 {
@@ -24,9 +20,9 @@ namespace ProceduralMusic
             var tr = t - Math.Floor(t / _period) * _period;
             var tc = Math.Floor(t / _period);
 
-            if (tc > _repetitions) return 0.0;
-            
-            return (tc < _repetitions ? _src.Sample(tr) : 0.0)
+            if (_repetitions != 0 && tc > _repetitions) return 0.0;
+
+            return (_repetitions == 0 || tc < _repetitions ? _src.Sample(tr) : 0.0)
                 + (t >= _period ? _src.Sample(tr + _period) : 0.0);
         }
     }

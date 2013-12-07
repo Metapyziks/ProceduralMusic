@@ -43,12 +43,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Echo.cs" />
+    <Compile Include="FadeIn.cs" />
+    <Compile Include="FadeOut.cs" />
     <Compile Include="PitchShift.cs" />
     <Compile Include="Repeat.cs" />
     <Compile Include="SampleFile.cs" />
     <Compile Include="Sampler.cs" />
     <Compile Include="Scale.cs" />
     <Compile Include="Sequence.cs" />
+    <Compile Include="PhaseShift.cs" />
     <Compile Include="Source.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

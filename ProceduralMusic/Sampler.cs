@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using OpenTK.Audio;
@@ -16,7 +17,7 @@ namespace ProceduralMusic
 
             short[] shortData = new short[doubleData.Length];
             for (int i = 0; i < doubleData.Length; ++i) {
-                shortData[i] = (short) (doubleData[i] * (short.MaxValue));
+                shortData[i] = (short) (Math.Min(1.0, Math.Max(-1.0, doubleData[i])) * (short.MaxValue));
             }
 
             return shortData;
@@ -25,21 +26,63 @@ namespace ProceduralMusic
         public static void PreviewPlayback(Source src, double start, double duration, int repetitions = 1, int sampleRate = 44100)
         {
             using (AudioContext context = new AudioContext()) {
-                int buffer = AL.GenBuffer();
+                int samplesPerBuffer = sampleRate / 2;
+                int sampleCount = (int) (duration * sampleRate);
+                int bufferCount = (int) Math.Ceiling((double) sampleCount / samplesPerBuffer);
+
+                int[] buffers = AL.GenBuffers(bufferCount);
                 int source = AL.GenSource();
-                int state;
 
-                short[] shortData = Sampler.SampleInt16Buffer(src, start, duration, sampleRate);
-                AL.BufferData(buffer, ALFormat.Mono16, shortData, shortData.Length * 2, sampleRate);
-                AL.SourceQueueBuffers(source, repetitions, Enumerable.Repeat(buffer, repetitions).ToArray());
+                var bufferDuration = (double) samplesPerBuffer / sampleRate;
 
-                var error = AL.GetError();
-                if (error != ALError.NoError) {
-                    throw new Exception(AL.GetErrorString(error));
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("[{0}]", String.Join("", Enumerable.Repeat(' ', Console.WindowWidth - 2)));
+                Console.CursorTop = 0;
+                Console.ResetColor();
+
+                var timer = new Stopwatch();
+
+                int bufferX = 1;
+                int playbackX = 1;
+                for (int i = 0; i < bufferCount; ++i) {
+                    double offset = bufferDuration * i;
+                    short[] shortData = Sampler.SampleInt16Buffer(src, start + offset, Math.Min(bufferDuration, duration - offset), sampleRate);
+                    AL.BufferData(buffers[i], ALFormat.Mono16, shortData, shortData.Length * 2, sampleRate);
+                    AL.SourceQueueBuffers(source, 1, new int[] { buffers[i] });
+
+                    int nextX = 1 + ((Console.WindowWidth - 2) * (i + 1)) / bufferCount;
+                    if (nextX > bufferX) {
+                        Console.CursorLeft = bufferX;
+                        Console.Write(String.Join("", Enumerable.Repeat('-', nextX - bufferX)));
+                        bufferX = nextX;
+                    }
+
+                    nextX = 1 + (int) Math.Round(((Console.WindowWidth - 2) * timer.Elapsed.TotalSeconds) / duration);
+                    if (nextX > playbackX) {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.CursorLeft = playbackX;
+                        Console.Write(String.Join("", Enumerable.Repeat('=', nextX - playbackX)));
+                        Console.ResetColor();
+                        playbackX = nextX;
+                    }
+
+                    if (i == 0) {
+                        AL.SourcePlay(source);
+                        timer.Start();
+                    }
                 }
 
-                AL.SourcePlay(source);
+                int state;
                 do {
+                    int nextX = 1 + (int) Math.Round(((Console.WindowWidth - 2) * timer.Elapsed.TotalSeconds) / duration);
+                    if (nextX > playbackX) {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.CursorLeft = playbackX;
+                        Console.Write(String.Join("", Enumerable.Repeat('=', nextX - playbackX)));
+                        Console.ResetColor();
+                        playbackX = nextX;
+                    }
+
                     Thread.Sleep(1);
                     AL.GetSource(source, ALGetSourcei.SourceState, out state);
                 }
@@ -48,7 +91,7 @@ namespace ProceduralMusic
                 AL.SourceStop(source);
 
                 AL.DeleteSource(source);
-                AL.DeleteBuffer(buffer);
+                AL.DeleteBuffers(buffers);
             }
         }
     }
