@@ -8,7 +8,7 @@ namespace DrumLoopA
     {
         static void Main(string[] args)
         {
-            var bpm = 140.0;
+            var bpm = 174.0;
 
             var sampleDir = Path.Combine("..", "..", "..", "Samples");
             var drumDir = Path.Combine(sampleDir, "DrumHits");
@@ -19,18 +19,18 @@ namespace DrumLoopA
             var sfxDir = Path.Combine(sampleDir, "SFX");
             var bassDir = Path.Combine(sampleDir, "BassSounds");
 
-            var bass = new SampleFile(Path.Combine(bassDir, "DJF_C_SEXUAL808_BASS.wav")).Scale(0.2);
-            var pad = new SampleFile(Path.Combine(synthDir, "DJF_C_SUNRISE.wav")).Scale(0.1)
+            var bass = new SampleFile(Path.Combine(bassDir, "DJF_C_SEXUAL808_BASS.wav")).Scale(0.2f);
+            var pad = new SampleFile(Path.Combine(synthDir, "DJF_C_SUNRISE.wav")).Scale(0.1f)
                 .PitchShift(0.25);
-            var sfxA = new SampleFile(Path.Combine(sfxDir, "DJF_ALIEN_RECON.wav")).Scale(0.1)
+            var sfxA = new SampleFile(Path.Combine(sfxDir, "DJF_ALIEN_RECON.wav")).Scale(0.1f)
                 .PitchShift(0.25);
-            var sfxB = new SampleFile(Path.Combine(sfxDir, "DJF_AIRLOCK.wav")).Scale(0.2)
+            var sfxB = new SampleFile(Path.Combine(sfxDir, "DJF_AIRLOCK.wav")).Scale(0.2f)
                 .PitchShift(0.25);
             
-            var hiHat = new SampleFile(Path.Combine(hiHatDir, "DJF_HH_HINGE.wav")).Scale(0.4);
-            var crash = new SampleFile(Path.Combine(hiHatDir, "DJF_HH_JINAL.wav")).Scale(0.1);
-            var snare = new SampleFile(Path.Combine(hiHatDir, "DJF_HH_HEAT_BEAST.wav")).Scale(0.27);
-            var bassDrum = new SampleFile(Path.Combine(bassDrumDir, "DJF_BD_KNOCKERS.wav")).Scale(0.33);
+            var hiHat = new SampleFile(Path.Combine(hiHatDir, "DJF_HH_HINGE.wav")).Scale(0.4f);
+            var crash = new SampleFile(Path.Combine(hiHatDir, "DJF_HH_JINAL.wav")).Scale(0.1f);
+            var snare = new SampleFile(Path.Combine(hiHatDir, "DJF_HH_HEAT_BEAST.wav")).Scale(0.27f);
+            var bassDrum = new SampleFile(Path.Combine(bassDrumDir, "DJF_BD_KNOCKERS.wav")).Scale(0.33f);
 
             Func<Source, Source> fade = (x) => x.PhaseShift(-60.0 / bpm * 12)
                 .FadeOut(60.0 / bpm * 12).PhaseShift(60.0 / bpm * 12);
@@ -57,7 +57,7 @@ namespace DrumLoopA
                         { 4,  snare },
                         { 7,  snare },
                         { 9,  snare },
-                        { 10, hiHat.Scale(2.5) },
+                        { 10, hiHat.Scale(2.5f) },
                         { 10, bassDrum },
                         { 12, hiHat.Repeat(bpm, 2, 2) },
                         { 14, snare }
@@ -70,7 +70,7 @@ namespace DrumLoopA
                         { 4,  snare },
                         { 7,  snare },
                         { 9,  snare },
-                        { 10, crash.Echo(30.0 / bpm, 0.7).FadeIn(30.0 / bpm) },
+                        { 10, crash.Echo(30.0 / bpm, 0.7f).FadeIn(30.0 / bpm) },
                         { 10, bassDrum },
                         { 12, hiHat.Repeat(bpm, 2, 2) },
                         { 14, snare }

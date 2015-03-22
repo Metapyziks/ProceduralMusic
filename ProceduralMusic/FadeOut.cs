@@ -12,11 +12,11 @@ namespace ProceduralMusic
             _duration = duration;
         }
 
-        public override double Sample(double t)
+        public override float Sample(double t)
         {
             if (t < 0.0) return _src.Sample(t);
-            if (t >= _duration) return 0.0;
-            return _src.Sample(t) * (1.0 - (t / _duration));
+            if (t >= _duration) return 0.0f;
+            return _src.Sample(t) * (float) (1.0 - (t / _duration));
         }
     }
 }

@@ -36,7 +36,7 @@ namespace ProceduralMusic
             _elems.Add(new SequenceElement(source, _beatPeriod * beat));
         }
 
-        public override double Sample(double t)
+        public override float Sample(double t)
         {
             return _elems
                 .Where(x => x.Delay < t)

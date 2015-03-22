@@ -11,13 +11,13 @@ namespace ProceduralMusic
     {
         public static short[] SampleInt16Buffer(Source src, double start, double duration, int sampleRate = 44100)
         {
-            double[] doubleData = new double[(int) (duration * sampleRate)];
+            float[] floatData = new float[(int) (duration * sampleRate)];
 
-            src.Sample(doubleData, start, duration, sampleRate);
+            src.Sample(floatData, start, duration, sampleRate);
 
-            short[] shortData = new short[doubleData.Length];
-            for (int i = 0; i < doubleData.Length; ++i) {
-                shortData[i] = (short) (Math.Min(1.0, Math.Max(-1.0, doubleData[i])) * (short.MaxValue));
+            short[] shortData = new short[floatData.Length];
+            for (int i = 0; i < floatData.Length; ++i) {
+                shortData[i] = (short) (Math.Min(1.0, Math.Max(-1.0, floatData[i])) * (short.MaxValue));
             }
 
             return shortData;

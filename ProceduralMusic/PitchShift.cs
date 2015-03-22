@@ -14,7 +14,7 @@ namespace ProceduralMusic
             _duration = duration;
         }
 
-        public override double Sample(double t)
+        public override float Sample(double t)
         {
             if (t < 0.0) return _src.Sample(t);
             if (t >= _duration) return _src.Sample(t * _scale - 0.5 * _duration * (_scale - 1.0));

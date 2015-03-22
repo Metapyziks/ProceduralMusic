@@ -4,15 +4,15 @@ namespace ProceduralMusic
     public class Scale : Source
     {
         private Source _src;
-        private double _scale;
+        private float _scale;
 
-        public Scale(Source source, double scale)
+        public Scale(Source source, float scale)
         {
             _src = source;
             _scale = scale;
         }
 
-        public override double Sample(double t)
+        public override float Sample(double t)
         {
             return _src.Sample(t) * _scale;
         }

@@ -9,14 +9,14 @@ namespace ProceduralMusic
             return (long) (time * freq);
         }
 
-        public abstract double Sample(double t);
+        public abstract float Sample(double t);
 
-        public virtual void Sample(double[] buffer, double start, double duration, int freq)
+        public virtual void Sample(float[] buffer, double start, double duration, int freq)
         {
             Sample(buffer, 0, start, duration, freq);
         }
 
-        public virtual void Sample(double[] buffer, int offset, double start, double duration, int freq)
+        public virtual void Sample(float[] buffer, int offset, double start, double duration, int freq)
         {
             long samples = Math.Min(buffer.Length - offset, SampleOffset(duration, freq));
             for (long i = samples - 1; i >= 0; --i) {
@@ -24,7 +24,7 @@ namespace ProceduralMusic
             }
         }
 
-        public Scale Scale(double scale)
+        public Scale Scale(float scale)
         {
             return new Scale(this, scale);
         }
@@ -51,7 +51,7 @@ namespace ProceduralMusic
 
         public PitchShift PitchShift(double scale)
         {
-            return new PitchShift(this, scale, 0.0);
+            return new PitchShift(this, scale, 0.0f);
         }
 
         public PitchShift PitchShift(double scale, double duration)
@@ -64,7 +64,7 @@ namespace ProceduralMusic
             return new PhaseShift(this, period);
         }
 
-        public Echo Echo(double delay, double decay)
+        public Echo Echo(double delay, float decay)
         {
             return new Echo(this, delay, decay);
         }

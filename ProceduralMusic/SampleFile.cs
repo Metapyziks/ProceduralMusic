@@ -5,13 +5,13 @@ namespace ProceduralMusic
 {
     public class SampleFile : Source
     {
-        private static double BytesToDouble(byte firstByte, byte secondByte)
+        private static float BytesToSingle(byte firstByte, byte secondByte)
         {
             short s = (short) ((secondByte << 8) | firstByte);
-            return s / 32768.0;
+            return s / 32768f;
         }
 
-        private static double ReadSample(byte[] wav, int offset, int bps)
+        private static float ReadSample(byte[] wav, int offset, int bps)
         {
             ulong val = 0;
             for (int i = 0; i < (bps >> 3); ++i) {
@@ -19,13 +19,13 @@ namespace ProceduralMusic
             }
 
             if (val >> (bps - 1) != 0) {
-                return -(((~val + 1) & (ulong) ((1 << bps) - 1)) / (double) (1 << (bps - 1)));
+                return -(((~val + 1) & (ulong) ((1 << bps) - 1)) / (float) (1 << (bps - 1)));
             } else {
-                return val / (double) (1 << (bps - 1));
+                return val / (float) (1 << (bps - 1));
             }
         }
 
-        private static void OpenWav(string filename, out int freq, out double[] buffer)
+        private static void OpenWav(string filename, out int freq, out float[] buffer)
         {
             byte[] wav = File.ReadAllBytes(filename);
 
@@ -55,7 +55,7 @@ namespace ProceduralMusic
             if (channels == 2) samples /= 2;
 
             // Allocate memory (right will be null if only mono sound)
-            buffer = new double[samples];
+            buffer = new float[samples];
 
             // Write to double array/s:
             int i = 0;
@@ -63,14 +63,14 @@ namespace ProceduralMusic
                 buffer[i] = ReadSample(wav, pos, bps);
                 pos += (bps >> 3);
                 if (channels == 2) {
-                    buffer[i] = (buffer[i] + ReadSample(wav, pos, bps)) * 0.5;
+                    buffer[i] = (buffer[i] + ReadSample(wav, pos, bps)) * 0.5f;
                     pos += (bps >> 3);
                 }
                 i++;
             }
         }
 
-        private double[] _samples;
+        private float[] _samples;
 
         private int _sampleCount;
         private int _freq;
@@ -88,14 +88,14 @@ namespace ProceduralMusic
         }
 
 
-        public override double Sample(double t)
+        public override float Sample(double t)
         {
             long i = SampleOffset(t, _freq);
 
             if (i < _sampleCount) {
                 return _samples[i];
             } else {
-                return 0.0;
+                return 0.0f;
             }
         }
     }

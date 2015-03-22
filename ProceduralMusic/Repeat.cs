@@ -15,15 +15,15 @@ namespace ProceduralMusic
             _repetitions = repetitions;
         }
 
-        public override double Sample(double t)
+        public override float Sample(double t)
         {
             var tr = t - Math.Floor(t / _period) * _period;
             var tc = Math.Floor(t / _period);
 
-            if (_repetitions != 0 && tc > _repetitions) return 0.0;
+            if (_repetitions != 0 && tc > _repetitions) return 0.0f;
 
-            return (_repetitions == 0 || tc < _repetitions ? _src.Sample(tr) : 0.0)
-                + (t >= _period ? _src.Sample(tr + _period) : 0.0);
+            return (_repetitions == 0 || tc < _repetitions ? _src.Sample(tr) : 0.0f)
+                + (t >= _period ? _src.Sample(tr + _period) : 0.0f);
         }
     }
 }

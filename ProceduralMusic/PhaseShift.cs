@@ -12,7 +12,7 @@ namespace ProceduralMusic
             _period = period;
         }
 
-        public override double Sample(double t)
+        public override float Sample(double t)
         {
             return _src.Sample(t - _period);
         }
